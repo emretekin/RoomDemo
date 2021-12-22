@@ -10,42 +10,48 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.emretekin.roomdemo.R
 import com.emretekin.roomdemo.model.User
 import com.emretekin.roomdemo.viewModel.UserViewModel
-import kotlinx.android.synthetic.main.fragment_add.*
-import kotlinx.android.synthetic.main.fragment_add.view.*
+import kotlinx.android.synthetic.main.fragment_update.*
+import kotlinx.android.synthetic.main.fragment_update.view.*
 
-class AddFragment : Fragment() {
 
-    private var userViewModel: UserViewModel? = null
+class UpdateFragment : Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    private val args by navArgs<UpdateFragmentArgs>()
+
+    private lateinit var userViewModel: UserViewModel
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_add, container, false)
+        val view = inflater.inflate(R.layout.fragment_update, container, false)
 
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
-        view.btnAdd.setOnClickListener {
-            insertDataToDatabase()
+        view.updateEtName.setText(args.currentUser.firstName)
+        view.updateEtLastname.setText(args.currentUser.surname)
+        view.updateEtAge.setText(args.currentUser.age.toString())
+
+        view.btnUpdate.setOnClickListener {
+            updateItem()
         }
 
         return view
     }
 
-    private fun insertDataToDatabase() {
-        val firstName = etName.text.toString()
-        val lastName = etLastname.text.toString()
-        val age = etAge.text.toString()
+    private fun updateItem() {
+        val firstName = updateEtName.text.toString()
+        val lastName = updateEtLastname.text.toString()
+        val age = updateEtAge.text.toString()
 
         if (isValid(firstName, lastName, age)) {
-            val user = User(0 , firstName, lastName, age.toInt())
-            userViewModel?.addUser(user)
-            showToast("Data added successfully")
-            findNavController().popBackStack()
+            val updatedUser = User(args.currentUser.id, firstName, lastName, age.toInt())
+            userViewModel.updateUser(updatedUser)
+            showToast("Data updated successfully")
+
+            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         } else {
             showToast("Please fill out all fields")
         }
@@ -57,4 +63,5 @@ class AddFragment : Fragment() {
 
     fun Context?.toast(text: CharSequence, duration: Int = Toast.LENGTH_LONG) = this?.let { Toast.makeText(it, text, duration).show() }
     fun Fragment?.showToast(text: CharSequence, duration: Int = Toast.LENGTH_LONG) = this?.let { requireActivity().toast(text, duration) }
+
 }

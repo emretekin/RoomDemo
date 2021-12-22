@@ -1,6 +1,7 @@
 package com.emretekin.roomdemo.data
 
 import androidx.lifecycle.LiveData
+import com.emretekin.roomdemo.model.User
 
 class UserRepository(private val userDao: UserDao) {
 
@@ -10,5 +11,8 @@ class UserRepository(private val userDao: UserDao) {
         userDao.addUser(user)
     }
 
+    suspend fun updateData(user: User) {
+        userDao.updateUser(user)
+    }
 
 }
