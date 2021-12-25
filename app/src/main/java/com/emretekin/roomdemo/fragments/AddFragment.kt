@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.emretekin.roomdemo.R
+import com.emretekin.roomdemo.model.Address
 import com.emretekin.roomdemo.model.User
 import com.emretekin.roomdemo.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_add.*
@@ -42,7 +43,8 @@ class AddFragment : Fragment() {
         val age = etAge.text.toString()
 
         if (isValid(firstName, lastName, age)) {
-            val user = User(0 , firstName, lastName, age.toInt())
+            val address = Address("Özgün Sk.", "1255", "İstanbul") //Dummy data
+            val user = User(0 , firstName, lastName, age.toInt(), address)
             userViewModel?.addUser(user)
             showToast("Data added successfully")
             findNavController().popBackStack()

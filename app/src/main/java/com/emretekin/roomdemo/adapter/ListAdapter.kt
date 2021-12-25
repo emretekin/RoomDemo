@@ -26,7 +26,7 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = userList[position]
 
-        holder.itemView.txtNumber.text = item.id.toString()
+        holder.itemView.txtNumber.text = item.id.toString() + "-"
         holder.itemView.txtFirstName.text = item.firstName
         holder.itemView.txtSurname.text = item.surname
         holder.itemView.txtAge.text = item.age.toString()

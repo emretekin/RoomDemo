@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.emretekin.roomdemo.R
+import com.emretekin.roomdemo.model.Address
 import com.emretekin.roomdemo.model.User
 import com.emretekin.roomdemo.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_update.*
@@ -48,7 +49,8 @@ class UpdateFragment : Fragment() {
         val age = updateEtAge.text.toString()
 
         if (isValid(firstName, lastName, age)) {
-            val updatedUser = User(args.currentUser.id, firstName, lastName, age.toInt())
+            val address = Address("Özgün Sk.", "1255", "İstanbul") //Dummy data
+            val updatedUser = User(args.currentUser.id, firstName, lastName, age.toInt(), address)
             userViewModel.updateUser(updatedUser)
             showToast("Data updated successfully")
 
